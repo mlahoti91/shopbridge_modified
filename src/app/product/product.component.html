@@ -1,0 +1,107 @@
+<form [formGroup]="productForm">
+  <clr-wizard #productWizard [clrWizardOpen]="true" clrWizardSize="lg" (clrWizardOnCancel)="handleClose()">
+    <clr-wizard-title>{{product ? 'Edit Product':'Add New Product'}}</clr-wizard-title>
+    <clr-wizard-button [type]="'cancel'" (click)="handleClose()">Cancel</clr-wizard-button>
+    <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+    <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+    <clr-wizard-button [type]="'finish'" (click)="handleClose()">Finish</clr-wizard-button>
+    <clr-wizard-page>
+      <ng-template clrPageTitle>Details</ng-template>
+      <div formGroupName="basic">
+        <!--<clr-input-container>
+          <label for="name">Name</label>
+          <input type="text" clrInput formControlName="name" />
+          <clr-control-error>
+            {{ showNameRequiredError ? 'This field is required!': "Baigan" }}
+          </clr-control-error>
+        </clr-input-container>-->
+
+        <div class="clr-form-control">
+          <label for="basic" class="clr-control-label">Product Name *</label>
+          <div class="clr-control-container" [ngClass]="{'clr-error': showNameRequiredError}">
+            <div class="clr-input-wrapper">
+              <input
+                type="text"
+                id="basic"
+                placeholder="IPhone X..."
+                class="clr-input"
+                formControlName="name"
+              />
+              <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+            </div>
+            <span class="clr-subtext"
+              >{{ showNameRequiredError ? 'Name is Required!': '' }}</span>
+          </div>
+        </div>
+        <div class="toggle-switch">
+          <input type="checkbox" id="active" formControlName="active" />
+          <label for="active" class="clr-control-label">Availability</label>
+        </div>
+
+        <div style=" padding-top: 3%;">
+          <label for="price" class="clr-control-label">Price *</label>
+          <input
+            type="number"
+            formControlName="price"
+            restrict-to="[0-9]"
+            min="0"
+            required
+          />
+        </div>
+        <div class="clr-form-control">
+          <label for="vertical-textarea-basic" class="clr-control-label"
+            >Product Description *</label>
+          <div class="clr-control-container">
+            <div class="clr-textarea-wrapper">
+              <textarea
+                placeholder="Enter description here..."
+                class="clr-textarea"
+                formControlName="description"
+                required
+              ></textarea>
+              <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+            </div>
+            <span class="clr-subtext"
+              >Product Description will be shown on the Product</span>
+          </div>
+        </div>
+        <!-- <div class="clr-form-control">
+            <div class="clr-control-container" formArrayName="features" *ngFor="let control of featureForms.controls; let i = index">
+                <div class="clr-input-wrapper">
+                    <input type="text" id="basic" placeholder="IPhone X..." class="clr-input" [formControl]="control">
+                    <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+                </div>
+            </div>
+            
+
+        </div> -->
+      </div>
+
+      <ng-template clrPageButtons>
+        <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+        <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+        <clr-wizard-button [clrWizardButtonDisabled]="isBasicInvalid" [type]="'next'">Next</clr-wizard-button>
+      </ng-template>
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+      <ng-template clrPageTitle>Expiration Info</ng-template>
+      <div formGroupName="expiration">
+        <input type="date" clrDate formControlName="expirationDate" />
+        <span class="clr-subtext">Date should be future date</span>
+      </div>
+      <div>
+        <input
+          #Image
+          type="file"
+          (change)="handleFileInput($event.target.files)"
+        />
+        <img width="100%" *ngIf="imageUrl" [src]="imageUrl" class="image" />
+      </div>
+      <ng-template clrPageButtons>
+        <clr-wizard-button [clrWizardButtonDisabled]="isExpirationInvalid" (click)="handleFinish()" [type]="'finish'">
+          Finish</clr-wizard-button>
+      </ng-template>
+    </clr-wizard-page>
+  </clr-wizard>
+</form>

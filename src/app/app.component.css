@@ -1,0 +1,14 @@
+.branding h1 {
+  color: white;
+  font-size: 70px;
+  margin-top: 10px;
+  margin-left: 850px;
+  font-family: cursive;
+  
+}
+
+.main-container header.header-6 {
+  background-color: cadetblue;
+  flex: 0 0 3.5rem;
+}
+

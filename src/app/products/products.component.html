@@ -1,0 +1,48 @@
+<h1>Products</h1>
+
+<button
+  class="btn btn-outline btn-md"
+  (click)="addProduct()"
+  style="margin-left:550px;background-color: cadetblue;color: white;"
+>
+  Add Product
+</button>
+
+<clr-datagrid style=" padding-top: 3%;display:block">
+
+  <clr-dg-column clrDgField="name" style="background-color:cadetblue;">Name</clr-dg-column>
+  <clr-dg-column style="background-color:cadetblue;">Description</clr-dg-column>
+  <clr-dg-column style="background-color:cadetblue;">Expiration Date</clr-dg-column>
+  <clr-dg-column style="background-color:cadetblue;">Price</clr-dg-column>
+  <clr-dg-column style="background-color:cadetblue;">Availability</clr-dg-column>
+  <clr-dg-column style="background-color:cadetblue;">Image</clr-dg-column>
+  <clr-dg-row *clrDgItems="let product of products$ | async; trackBy id" [clrDgItem]="product">
+    <clr-dg-action-overflow>
+      <button class="action-item" (click)="onEdit(product)">Edit</button>
+      <button class="action-item" (click)="onDelete(product)">Delete</button>
+    </clr-dg-action-overflow>
+    <clr-dg-cell>{{product.name}}</clr-dg-cell>
+    <clr-dg-cell style="table-layout: fixed;width:500px">{{product.description}}</clr-dg-cell>
+    <clr-dg-cell>{{product.expirationDate}}</clr-dg-cell>
+    <clr-dg-cell>{{product.price}}</clr-dg-cell>
+    <clr-dg-cell><span
+        class="label"
+        [ngClass]="{'label-success': product.active, 'label-danger': !product.active}"
+        >{{product.active ? 'Available': 'Out of stock'}}</span>
+    </clr-dg-cell>
+    <clr-dg-cell><img width="100%" *ngIf="product.productImage" [src]="product.productImage" class="image"
+    /></clr-dg-cell>
+  </clr-dg-row>
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="5">
+      <clr-dg-page-size [clrPageSizeOptions]="[5,10,50]">Products per page</clr-dg-page-size>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of
+      {{pagination.totalItems}} products
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<app-delete-product-modal *ngIf="delete" [product]="productToBeDeleted" (cancel)="handleCancel()"
+  (confirm)="confirmDelete()"></app-delete-product-modal>
+
+<app-product *ngIf="productOpen" [product]="selectedProduct" (finish)="handleFinish($event)"></app-product>
